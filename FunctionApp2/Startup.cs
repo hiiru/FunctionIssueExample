@@ -41,11 +41,6 @@ namespace FunctionApp2
             config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                     .AddJsonFile($"appsettings.{Environment}.json", optional: true, reloadOnChange: true);
 
-            if (Environment.Equals("Development", StringComparison.OrdinalIgnoreCase))
-            {
-                config.AddUserSecrets<Startup>();
-            }
-
             config.AddEnvironmentVariables();
 
             var newConfig = config.Build();
