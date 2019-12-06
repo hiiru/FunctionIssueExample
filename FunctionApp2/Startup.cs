@@ -1,4 +1,5 @@
 ﻿using FunctionApp2;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,14 +9,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-[assembly: WebJobsStartup(typeof(Startup))]
+[assembly: FunctionsStartup(typeof(Startup))]
 namespace FunctionApp2
 {
-    public class Startup : IWebJobsStartup
+    public class Startup : FunctionsStartup
     {
         public static string Environment;
 
-        public void Configure(IWebJobsBuilder builder)
+        public override void Configure(IFunctionsHostBuilder builder)
         {
             ReplaceConfig(builder);
 
@@ -23,7 +24,7 @@ namespace FunctionApp2
             builder.Services.AddSingleton<INameResolver, MyNameResolver>();
         }
 
-        private void ReplaceConfig(IWebJobsBuilder builder)
+        private void ReplaceConfig(IFunctionsHostBuilder builder)
         {
             var configServiceDescriptor = builder.Services.FirstOrDefault(d => d.ServiceType == typeof(IConfiguration));
             var baseConfig = configServiceDescriptor?.ImplementationInstance as IConfiguration;
